@@ -58,7 +58,9 @@ export const { setSelectedDate } = dashboardSlice.actions;
 export const dashboardReducer = dashboardSlice.reducer;
 
 // Selectors
+export const selectDashboard = (state: RootState) => state.dashboard.summary;
 export const selectDashboardSummary = (state: RootState) => state.dashboard.summary;
 export const selectDashboardStatus = (state: RootState) => state.dashboard.status;
+export const selectDashboardLoading = (state: RootState) => state.dashboard.status === 'loading';
 export const selectDashboardError = (state: RootState) => state.dashboard.error;
 export const selectDashboardDate = (state: RootState) => state.dashboard.selectedDate;

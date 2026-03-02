@@ -118,9 +118,34 @@ const vehiclesSlice = createSlice({
 export const { clearVehiclesError } = vehiclesSlice.actions;
 export const vehiclesReducer = vehiclesSlice.reducer;
 
-// Selectors
-export const selectAllVehicles = (state: RootState) => state.vehicles.items;
+// Selectors (raw items)
+export const selectRawVehicles = (state: RootState) => state.vehicles.items;
 export const selectVehiclesStatus = (state: RootState) => state.vehicles.status;
+export const selectVehiclesLoading = (state: RootState) => state.vehicles.status === 'loading';
 export const selectVehiclesError = (state: RootState) => state.vehicles.error;
 export const selectVehicleById = (state: RootState, id: string) =>
   state.vehicles.items.find((v) => v.id === id);
+
+// Mapped selector: raw DB rows → domain Vehicle type
+export const selectAllVehicles = (state: RootState) =>
+  state.vehicles.items.map((v) => ({
+    id: v.id,
+    plateNumber: v.plate_number,
+    type: v.type as import('../types/enums').VehicleType,
+    capacity: v.capacity,
+    driverId: v.driver_id,
+    driver: v.driver_name
+      ? {
+          id: v.driver_id ?? '',
+          name: v.driver_name,
+          licenseNumber: v.driver_license_number ?? '',
+          phoneNumber: v.driver_phone_number ?? '',
+          status: (v.driver_status ?? 'AVAILABLE') as import('../types/enums').DriverStatus,
+          createdAt: '',
+          updatedAt: '',
+        }
+      : null,
+    status: v.status as import('../types/enums').VehicleStatus,
+    createdAt: v.created_at,
+    updatedAt: v.updated_at,
+  }));

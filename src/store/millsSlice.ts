@@ -104,9 +104,27 @@ const millsSlice = createSlice({
 export const { clearMillsError } = millsSlice.actions;
 export const millsReducer = millsSlice.reducer;
 
-// Selectors
-export const selectAllMills = (state: RootState) => state.mills.items;
+// Selectors (raw items)
+export const selectRawMills = (state: RootState) => state.mills.items;
 export const selectMillsStatus = (state: RootState) => state.mills.status;
+export const selectMillsLoading = (state: RootState) => state.mills.status === 'loading';
 export const selectMillsError = (state: RootState) => state.mills.error;
 export const selectMillById = (state: RootState, id: string) =>
   state.mills.items.find((m) => m.id === id);
+
+// Mapped selector: raw DB rows → domain Mill type
+export const selectAllMills = (state: RootState) =>
+  state.mills.items.map((m) => ({
+    id: m.id,
+    name: m.name,
+    location: {
+      latitude: m.latitude,
+      longitude: m.longitude,
+      address: m.address ?? undefined,
+    },
+    contactPerson: m.contact_person,
+    phoneNumber: m.phone_number,
+    avgDailyProduction: m.avg_daily_production,
+    createdAt: m.created_at,
+    updatedAt: m.updated_at,
+  }));

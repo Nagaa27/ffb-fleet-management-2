@@ -154,15 +154,70 @@ const tripsSlice = createSlice({
 export const { setTripFilters, clearTripsError, clearSelectedTrip } = tripsSlice.actions;
 export const tripsReducer = tripsSlice.reducer;
 
-// Selectors
-export const selectAllTrips = (state: RootState) => state.trips.items;
+// Selectors (raw items)
+export const selectRawTrips = (state: RootState) => state.trips.items;
 export const selectTripsStatus = (state: RootState) => state.trips.status;
+export const selectTripsLoading = (state: RootState) => state.trips.status === 'loading';
 export const selectTripsError = (state: RootState) => state.trips.error;
 export const selectSelectedTrip = (state: RootState) => state.trips.selectedTrip;
 export const selectTripFilters = (state: RootState) => state.trips.filters;
 
+// Mapped selector: raw DB rows → domain Trip type
+export const selectAllTrips = (state: RootState) =>
+  state.trips.items.map((t) => ({
+    id: t.id,
+    vehicleId: t.vehicle_id,
+    driverId: t.driver_id,
+    vehicle: t.vehicle_plate_number
+      ? {
+          id: t.vehicle_id,
+          plateNumber: t.vehicle_plate_number,
+          type: (t.vehicle_type ?? 'TRUCK_MEDIUM') as import('../types/enums').VehicleType,
+          capacity: t.vehicle_capacity ?? 0,
+          driverId: null,
+          driver: null,
+          status: 'ACTIVE' as import('../types/enums').VehicleStatus,
+          createdAt: '',
+          updatedAt: '',
+        }
+      : undefined,
+    driver: t.driver_name
+      ? {
+          id: t.driver_id,
+          name: t.driver_name,
+          licenseNumber: t.driver_license_number ?? '',
+          phoneNumber: '',
+          status: 'ON_DUTY' as import('../types/enums').DriverStatus,
+          createdAt: '',
+          updatedAt: '',
+        }
+      : undefined,
+    scheduledDate: t.scheduled_date,
+    status: t.status as import('../types/enums').TripStatus,
+    collections: (t.collections ?? []).map((c) => ({
+      id: c.id,
+      tripId: c.trip_id,
+      millId: c.mill_id,
+      mill: c.mill_name ? { id: c.mill_id, name: c.mill_name, location: { latitude: 0, longitude: 0 }, contactPerson: '', phoneNumber: '', avgDailyProduction: 0, createdAt: '', updatedAt: '' } : undefined,
+      plannedWeight: c.planned_weight,
+      actualWeight: c.actual_weight,
+      collectedAt: c.collected_at,
+      notes: c.notes,
+      createdAt: '',
+      updatedAt: '',
+    })),
+    estimatedDuration: t.estimated_duration,
+    startedAt: t.started_at,
+    completedAt: t.completed_at,
+    cancelledAt: t.cancelled_at,
+    cancellationReason: t.cancellation_reason,
+    notes: t.notes,
+    createdAt: t.created_at,
+    updatedAt: t.updated_at,
+  }));
+
 // Memoized selector: trips by status
 export const selectTripsByStatus = createSelector(
-  [selectAllTrips, (_state: RootState, status: string) => status],
+  [selectRawTrips, (_state: RootState, status: string) => status],
   (trips, status) => trips.filter((t) => t.status === status),
 );

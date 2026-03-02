@@ -95,9 +95,22 @@ const driversSlice = createSlice({
 export const { clearDriversError } = driversSlice.actions;
 export const driversReducer = driversSlice.reducer;
 
-// Selectors
-export const selectAllDrivers = (state: RootState) => state.drivers.items;
+// Selectors (raw items)
+export const selectRawDrivers = (state: RootState) => state.drivers.items;
 export const selectDriversStatus = (state: RootState) => state.drivers.status;
+export const selectDriversLoading = (state: RootState) => state.drivers.status === 'loading';
 export const selectDriversError = (state: RootState) => state.drivers.error;
 export const selectDriverById = (state: RootState, id: string) =>
   state.drivers.items.find((d) => d.id === id);
+
+// Mapped selector: raw DB rows → domain Driver type
+export const selectAllDrivers = (state: RootState) =>
+  state.drivers.items.map((d) => ({
+    id: d.id,
+    name: d.name,
+    licenseNumber: d.license_number,
+    phoneNumber: d.phone_number,
+    status: d.status as import('../types/enums').DriverStatus,
+    createdAt: d.created_at,
+    updatedAt: d.updated_at,
+  }));
