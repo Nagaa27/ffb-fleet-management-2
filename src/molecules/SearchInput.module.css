@@ -1,0 +1,19 @@
+/* src/molecules/SearchInput.module.css */
+
+.search-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--color-neutral-400);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.search-input input {
+  padding-left: var(--space-9);
+}

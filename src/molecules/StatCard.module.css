@@ -1,0 +1,78 @@
+/* src/molecules/StatCard.module.css */
+
+.stat-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+
+.stat-icon--primary {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-600);
+}
+
+.stat-icon--success {
+  background-color: var(--color-success-50);
+  color: var(--color-success-600);
+}
+
+.stat-icon--warning {
+  background-color: var(--color-warning-50);
+  color: var(--color-warning-600);
+}
+
+.stat-icon--error {
+  background-color: var(--color-error-50);
+  color: var(--color-error-600);
+}
+
+.stat-icon--info {
+  background-color: var(--color-info-50);
+  color: var(--color-info-600);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-500);
+  font-weight: var(--font-weight-medium);
+}
+
+.stat-value {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-900);
+  line-height: 1.2;
+}
+
+.stat-trend {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.stat-trend--up {
+  color: var(--color-success-600);
+}
+
+.stat-trend--down {
+  color: var(--color-error-600);
+}
+
+.stat-trend--neutral {
+  color: var(--color-neutral-500);
+}

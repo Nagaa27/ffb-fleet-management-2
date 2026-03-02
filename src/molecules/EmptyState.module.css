@@ -1,0 +1,33 @@
+/* src/molecules/EmptyState.module.css */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+}
+
+.empty-icon {
+  color: var(--color-neutral-300);
+  margin-bottom: var(--space-3);
+}
+
+.empty-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-700);
+  margin: 0;
+}
+
+.empty-description {
+  font-size: var(--font-size-base);
+  color: var(--color-neutral-500);
+  margin: var(--space-1) 0 0;
+  max-width: 24rem;
+}
+
+.empty-action {
+  margin-top: var(--space-4);
+}

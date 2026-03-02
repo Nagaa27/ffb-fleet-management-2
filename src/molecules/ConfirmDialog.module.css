@@ -1,0 +1,41 @@
+/* src/molecules/ConfirmDialog.module.css */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--space-4);
+}
+
+.dialog {
+  background-color: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: var(--space-6);
+  max-width: 28rem;
+  width: 100%;
+}
+
+.dialog-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-neutral-900);
+  margin: 0 0 var(--space-2);
+}
+
+.dialog-message {
+  font-size: var(--font-size-base);
+  color: var(--color-neutral-600);
+  margin: 0 0 var(--space-6);
+  line-height: var(--line-height-normal);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
