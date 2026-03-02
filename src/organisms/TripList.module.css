@@ -1,0 +1,27 @@
+/* src/organisms/TripList.module.css */
+
+.trip-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.trip-icon {
+  color: var(--color-primary-500);
+}
+
+.trip-id {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-700);
+}
+
+.date-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.date-icon {
+  color: var(--color-neutral-400);
+}

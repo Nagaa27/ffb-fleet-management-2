@@ -1,0 +1,29 @@
+/* src/organisms/MillList.module.css */
+
+.mill-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.mill-icon {
+  color: var(--color-primary-500);
+}
+
+.mill-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-900);
+}
+
+.location-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-neutral-600);
+  font-size: var(--font-size-sm);
+}
+
+.location-icon {
+  color: var(--color-neutral-400);
+  flex-shrink: 0;
+}

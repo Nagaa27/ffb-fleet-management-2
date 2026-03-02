@@ -1,0 +1,76 @@
+/* src/organisms/DriverList.module.css */
+
+.driver-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.driver-icon {
+  color: var(--color-neutral-400);
+}
+
+.driver-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-900);
+}
+
+.actions-cell {
+  position: relative;
+}
+
+.menu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-neutral-500);
+  transition: background-color var(--transition-fast);
+}
+
+.menu-trigger:hover {
+  background-color: var(--color-neutral-100);
+}
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  min-width: 10rem;
+  background-color: white;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+  overflow: hidden;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-700);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.menu-item:hover {
+  background-color: var(--color-neutral-50);
+}
+
+.menu-item--danger {
+  color: var(--color-error-600);
+}
+
+.menu-item--danger:hover {
+  background-color: var(--color-error-50);
+}
