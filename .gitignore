@@ -1,0 +1,41 @@
+# ─── Agent Files (Private — Do Not Push) ─────────────────────────────────────
+# File-file ini berisi konteks internal agent, script presentasi, dan aturan
+# coding yang bersifat pribadi. Tidak boleh masuk ke repository publik.
+.agent/
+
+# ─── Dependencies ─────────────────────────────────────────────────────────────
+node_modules/
+
+# ─── Build Output ─────────────────────────────────────────────────────────────
+dist/
+build/
+.vite/
+
+# ─── Database ─────────────────────────────────────────────────────────────────
+# SQLite database file (berisi data aktual, jangan di-commit)
+*.sqlite
+*.sqlite3
+*.db
+data/
+
+# ─── Environment & Secrets ────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─── Coverage & Test Artifacts ────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ─── OS & Editor Files ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+.idea/
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ─── TypeScript ───────────────────────────────────────────────────────────────
+*.tsbuildinfo
