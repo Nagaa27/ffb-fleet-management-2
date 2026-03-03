@@ -7,3 +7,4 @@ export { Input } from './Input';
 export { Select } from './Select';
 export { Spinner } from './Spinner';
 export { Card } from './Card';
+export { Skeleton } from './Skeleton';

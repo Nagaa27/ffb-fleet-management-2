@@ -3,8 +3,7 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import { ChevronUp, ChevronDown } from 'lucide-react';
-import { Spinner } from '../atoms';
-import { EmptyState } from '../molecules';
+import { EmptyState, TableSkeleton } from '../molecules';
 import styles from './DataTable.module.css';
 
 export interface Column<T> {
@@ -65,11 +64,7 @@ export function DataTable<T>({
   }, [data, sort, columns]);
 
   if (loading) {
-    return (
-      <div className={styles['loading']}>
-        <Spinner size="lg" />
-      </div>
-    );
+    return <TableSkeleton rows={5} columns={columns.length} />;
   }
 
   if (data.length === 0) {

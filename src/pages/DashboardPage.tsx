@@ -5,15 +5,16 @@ import { useEffect } from 'react';
 import { Truck, Users, Route, Weight } from 'lucide-react';
 import { format } from 'date-fns';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { fetchDashboardThunk, selectDashboard } from '../store/dashboardSlice';
+import { fetchDashboardThunk, selectDashboard, selectDashboardLoading } from '../store/dashboardSlice';
 import { PageLayout } from '../templates';
 import { Card } from '../atoms';
-import { StatCard } from '../molecules';
+import { StatCard, DashboardSkeleton } from '../molecules';
 import styles from './DashboardPage.module.css';
 
 export function DashboardPage() {
   const dispatch = useAppDispatch();
   const dashboard = useAppSelector(selectDashboard);
+  const loading = useAppSelector(selectDashboardLoading);
 
   useEffect(() => {
     const today = format(new Date(), 'yyyy-MM-dd');
@@ -25,6 +26,10 @@ export function DashboardPage() {
       title="Dashboard"
       subtitle={`Ringkasan operasional — ${format(new Date(), 'dd MMMM yyyy')}`}
     >
+      {loading && !dashboard ? (
+        <DashboardSkeleton />
+      ) : (
+        <>
       <div className={styles['stats-grid']}>
         <StatCard
           icon={Truck}
@@ -112,6 +117,8 @@ export function DashboardPage() {
           </div>
         </Card>
       </div>
+        </>
+      )}
     </PageLayout>
   );
 }

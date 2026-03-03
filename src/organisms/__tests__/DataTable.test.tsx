@@ -52,7 +52,7 @@ describe('DataTable', () => {
     expect(screen.getByText('No items')).toBeInTheDocument();
   });
 
-  it('shows spinner when loading', () => {
+  it('shows skeleton when loading', () => {
     render(
       <DataTable
         columns={columns}
@@ -61,7 +61,7 @@ describe('DataTable', () => {
         loading
       />,
     );
-    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    expect(screen.getByTestId('table-skeleton')).toBeInTheDocument();
   });
 
   it('calls onRowClick when row is clicked', () => {
