@@ -1,9 +1,13 @@
 // src/pages/DashboardPage.tsx
 // Page: Dashboard with summary stats and charts.
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Truck, Users, Route, Weight } from 'lucide-react';
 import { format } from 'date-fns';
+import {
+  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  Tooltip, Legend, ResponsiveContainer,
+} from 'recharts';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchDashboardThunk, selectDashboard, selectDashboardLoading } from '../store/dashboardSlice';
 import { PageLayout } from '../templates';
@@ -20,6 +24,21 @@ export function DashboardPage() {
     const today = format(new Date(), 'yyyy-MM-dd');
     void dispatch(fetchDashboardThunk(today));
   }, [dispatch]);
+
+  const VEHICLE_COLORS = ['#2563eb', '#f59e0b', '#ef4444'];
+  const TRIP_COLORS = ['#6366f1', '#3b82f6', '#22c55e'];
+
+  const vehiclePieData = useMemo(() => [
+    { name: 'Aktif', value: dashboard?.activeVehicles ?? 0 },
+    { name: 'Idle', value: dashboard?.idleVehicles ?? 0 },
+    { name: 'Perawatan', value: dashboard?.maintenanceVehicles ?? 0 },
+  ], [dashboard]);
+
+  const tripBarData = useMemo(() => [
+    { name: 'Dijadwalkan', jumlah: dashboard?.todayScheduled ?? 0 },
+    { name: 'Berjalan', jumlah: dashboard?.todayInProgress ?? 0 },
+    { name: 'Selesai', jumlah: dashboard?.todayCompleted ?? 0 },
+  ], [dashboard]);
 
   return (
     <PageLayout
@@ -114,6 +133,53 @@ export function DashboardPage() {
               <span className={styles['detail-label']}>Selesai</span>
               <span className={styles['detail-value']}>{dashboard?.todayCompleted ?? 0}</span>
             </div>
+          </div>
+        </Card>
+      </div>
+
+      <div className={styles['chart-grid']}>
+        <Card padding="md">
+          <h3 className={styles['section-title']}>Status Kendaraan</h3>
+          <div className={styles['chart-container']}>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={vehiclePieData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={80}
+                  paddingAngle={4}
+                  dataKey="value"
+                  label={({ name, value }) => `${name}: ${value}`}
+                >
+                  {vehiclePieData.map((_, idx) => (
+                    <Cell key={`cell-${idx}`} fill={VEHICLE_COLORS[idx % VEHICLE_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+
+        <Card padding="md">
+          <h3 className={styles['section-title']}>Trip Hari Ini</h3>
+          <div className={styles['chart-container']}>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={tripBarData} margin={{ top: 10, right: 20, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" fontSize={12} />
+                <YAxis allowDecimals={false} fontSize={12} />
+                <Tooltip />
+                <Bar dataKey="jumlah" radius={[4, 4, 0, 0]}>
+                  {tripBarData.map((_, idx) => (
+                    <Cell key={`bar-${idx}`} fill={TRIP_COLORS[idx % TRIP_COLORS.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </Card>
       </div>

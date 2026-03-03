@@ -49,6 +49,19 @@
   color: var(--color-neutral-900);
 }
 
+/* Chart grid */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.chart-container {
+  width: 100%;
+  min-height: 250px;
+}
+
 /* sm (640px+): 2-column grids */
 @media (min-width: 640px) {
   .stats-grid {
@@ -59,6 +72,12 @@
   .detail-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-4);
+  }
+
+  .chart-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-4);
   }
 }
 
