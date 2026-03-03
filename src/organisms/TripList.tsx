@@ -1,12 +1,14 @@
 // src/organisms/TripList.tsx
-// Organism: Trip data table with status, driver, vehicle info.
+// Organism: Trip data table with status, driver, vehicle info and status actions.
 
-import { Route, Calendar } from 'lucide-react';
+import { Route, Calendar, Play, CheckCircle, XCircle } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { id as idLocale } from 'date-fns/locale';
 import { DataTable } from './DataTable';
 import type { Column } from './DataTable';
 import { StatusBadge } from '../molecules';
+import { Button } from '../atoms';
+import { TripStatus } from '../types/enums';
 import type { Trip } from '../types';
 import styles from './TripList.module.css';
 
@@ -14,9 +16,10 @@ interface TripListProps {
   trips: Trip[];
   loading?: boolean;
   onRowClick?: (trip: Trip) => void;
+  onStatusChange?: (tripId: string, newStatus: string) => void;
 }
 
-export function TripList({ trips, loading = false, onRowClick }: TripListProps) {
+export function TripList({ trips, loading = false, onRowClick, onStatusChange }: TripListProps) {
   const columns: Column<Trip>[] = [
     {
       key: 'id',
@@ -61,6 +64,68 @@ export function TripList({ trips, loading = false, onRowClick }: TripListProps) 
       sortable: true,
       render: (t) => <StatusBadge status={t.status} size="sm" />,
     },
+    ...(onStatusChange
+      ? [
+          {
+            key: 'actions',
+            header: 'Aksi',
+            render: (t: Trip) => {
+              const handleClick = (e: React.MouseEvent, status: string) => {
+                e.stopPropagation();
+                onStatusChange(t.id, status);
+              };
+
+              if (t.status === TripStatus.SCHEDULED) {
+                return (
+                  <div className={styles['action-buttons']}>
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      onClick={(e) => { handleClick(e, TripStatus.IN_PROGRESS); }}
+                      title="Mulai Trip"
+                    >
+                      <Play size={14} /> Mulai
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={(e) => { handleClick(e, TripStatus.CANCELLED); }}
+                      title="Batalkan Trip"
+                    >
+                      <XCircle size={14} />
+                    </Button>
+                  </div>
+                );
+              }
+
+              if (t.status === TripStatus.IN_PROGRESS) {
+                return (
+                  <div className={styles['action-buttons']}>
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      onClick={(e) => { handleClick(e, TripStatus.COMPLETED); }}
+                      title="Selesaikan Trip"
+                    >
+                      <CheckCircle size={14} /> Selesai
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={(e) => { handleClick(e, TripStatus.CANCELLED); }}
+                      title="Batalkan Trip"
+                    >
+                      <XCircle size={14} />
+                    </Button>
+                  </div>
+                );
+              }
+
+              return <span className={styles['no-action']}>—</span>;
+            },
+          } as Column<Trip>,
+        ]
+      : []),
   ];
 
   return (

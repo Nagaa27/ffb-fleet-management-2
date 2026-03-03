@@ -25,3 +25,43 @@
     grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
 }
+
+/* Multi-mill checkbox list */
+.mill-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 10rem;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  background: var(--color-surface);
+}
+
+.mill-check-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  transition: background 0.15s;
+}
+
+.mill-check-item:hover {
+  background: var(--color-hover);
+}
+
+.mill-check-item input[type="checkbox"] {
+  accent-color: var(--color-primary);
+  width: 1rem;
+  height: 1rem;
+}
+
+.mill-empty {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding: var(--space-2);
+}

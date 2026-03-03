@@ -16,3 +16,8 @@
   color: var(--color-error-500);
   margin-left: 0.125rem;
 }
+
+.form-error {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-error-500);
+}

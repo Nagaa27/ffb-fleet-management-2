@@ -1,5 +1,6 @@
 // src/organisms/TripForm.tsx
 // Organism: Trip creation/scheduling form using React Hook Form + Zod.
+// Supports multi-mill selection for collecting from multiple PKS in one trip.
 
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +14,7 @@ const tripSchema = z.object({
   vehicleId: z.string().min(1, 'Pilih kendaraan'),
   driverId: z.string().min(1, 'Pilih pengemudi'),
   scheduledDate: z.string().min(1, 'Pilih tanggal'),
-  millId: z.string().min(1, 'Pilih pabrik'),
+  millIds: z.array(z.string()).min(1, 'Pilih minimal 1 pabrik'),
   plannedWeight: z.coerce.number().min(0.1, 'Berat harus > 0').max(12, 'Maksimal 12 ton'),
   estimatedDuration: z.coerce.number().min(1, 'Durasi harus > 0'),
   notes: z.string().optional(),
@@ -47,7 +48,7 @@ export function TripForm({
       vehicleId: '',
       driverId: '',
       scheduledDate: new Date().toISOString().split('T')[0],
-      millId: '',
+      millIds: [] as string[],
       plannedWeight: 0,
       estimatedDuration: 60,
       notes: '',
@@ -62,11 +63,6 @@ export function TripForm({
   const driverOptions = drivers.map((d) => ({
     value: d.id,
     label: d.name,
-  }));
-
-  const millOptions = mills.map((m) => ({
-    value: m.id,
-    label: m.name,
   }));
 
   return (
@@ -114,17 +110,34 @@ export function TripForm({
           />
         </FormField>
 
-        <FormField label="Pabrik Tujuan" htmlFor="millId" required>
+        <FormField label="Pabrik Tujuan" htmlFor="millIds" required error={errors.millIds?.message}>
           <Controller
-            name="millId"
+            name="millIds"
             control={control}
             render={({ field }) => (
-              <Select
-                {...field}
-                options={millOptions}
-                placeholder="Pilih pabrik"
-                error={errors.millId?.message}
-              />
+              <div className={styles['mill-checklist']}>
+                {mills.map((m) => (
+                  <label key={m.id} className={styles['mill-check-item']}>
+                    <input
+                      type="checkbox"
+                      value={m.id}
+                      checked={field.value.includes(m.id)}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (e.target.checked) {
+                          field.onChange([...field.value, val]);
+                        } else {
+                          field.onChange(field.value.filter((id: string) => id !== val));
+                        }
+                      }}
+                    />
+                    <span>{m.name}</span>
+                  </label>
+                ))}
+                {mills.length === 0 && (
+                  <span className={styles['mill-empty']}>Tidak ada pabrik</span>
+                )}
+              </div>
             )}
           />
         </FormField>

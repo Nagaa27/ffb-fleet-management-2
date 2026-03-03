@@ -10,7 +10,8 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   fullWidth?: boolean;
-  onClick?: () => void;
+  title?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function Button({
@@ -20,6 +21,7 @@ export function Button({
   type = 'button',
   disabled = false,
   fullWidth = false,
+  title,
   onClick,
 }: ButtonProps) {
   const className = [
@@ -38,6 +40,7 @@ export function Button({
       type={type}
       disabled={disabled}
       onClick={onClick}
+      title={title}
       data-testid="button"
     >
       {children}

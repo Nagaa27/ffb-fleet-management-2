@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Plus } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { fetchTripsThunk, createTripThunk, selectAllTrips, selectTripsLoading } from '../store/tripsSlice';
+import { fetchTripsThunk, createTripThunk, updateTripStatusThunk, selectAllTrips, selectTripsLoading } from '../store/tripsSlice';
 import { fetchVehiclesThunk, selectAllVehicles } from '../store/vehiclesSlice';
 import { fetchDriversThunk, selectAllDrivers } from '../store/driversSlice';
 import { fetchMillsThunk, selectAllMills } from '../store/millsSlice';
@@ -39,13 +39,18 @@ export function TripsPage() {
     async (data: TripFormData) => {
       setCreating(true);
       try {
+        const weightPerMill: Record<string, number> = {};
+        const perMill = data.plannedWeight / data.millIds.length;
+        for (const id of data.millIds) {
+          weightPerMill[id] = Math.round(perMill * 100) / 100;
+        }
         await dispatch(
           createTripThunk({
             vehicleId: data.vehicleId,
             driverId: data.driverId,
-            millIds: [data.millId],
+            millIds: data.millIds,
             scheduledDate: data.scheduledDate,
-            plannedWeightPerMill: { [data.millId]: data.plannedWeight },
+            plannedWeightPerMill: weightPerMill,
             estimatedDuration: data.estimatedDuration,
             notes: data.notes,
           }),
@@ -54,6 +59,13 @@ export function TripsPage() {
       } finally {
         setCreating(false);
       }
+    },
+    [dispatch],
+  );
+
+  const handleStatusChange = useCallback(
+    (tripId: string, newStatus: string) => {
+      void dispatch(updateTripStatusThunk({ id: tripId, data: { status: newStatus } }));
     },
     [dispatch],
   );
@@ -97,7 +109,7 @@ export function TripsPage() {
         placeholder="Cari trip berdasarkan ID, pengemudi, atau kendaraan..."
       />
 
-      <TripList trips={filteredTrips} loading={loading} />
+      <TripList trips={filteredTrips} loading={loading} onStatusChange={handleStatusChange} />
     </PageLayout>
   );
 }

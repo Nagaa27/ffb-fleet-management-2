@@ -25,3 +25,15 @@
 .date-icon {
   color: var(--color-neutral-400);
 }
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-wrap: nowrap;
+}
+
+.no-action {
+  color: var(--color-neutral-400);
+  font-size: var(--font-size-sm);
+}
