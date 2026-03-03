@@ -4,14 +4,14 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Plus } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { fetchTripsThunk, createTripThunk, updateTripStatusThunk, selectAllTrips, selectTripsLoading } from '../store/tripsSlice';
+import { fetchTripsThunk, createTripThunk, updateTripStatusThunk, recordCollectionThunk, selectAllTrips, selectTripsLoading } from '../store/tripsSlice';
 import { fetchVehiclesThunk, selectAllVehicles } from '../store/vehiclesSlice';
 import { fetchDriversThunk, selectAllDrivers } from '../store/driversSlice';
 import { fetchMillsThunk, selectAllMills } from '../store/millsSlice';
 import { PageLayout } from '../templates';
 import { Button } from '../atoms';
 import { SearchInput } from '../molecules';
-import { TripList, TripForm } from '../organisms';
+import { TripList, TripForm, CollectionForm } from '../organisms';
 import type { TripFormData } from '../organisms';
 import type { Trip } from '../types';
 import styles from './TripsPage.module.css';
@@ -27,6 +27,8 @@ export function TripsPage() {
   const [showForm, setShowForm] = useState(false);
   const [search, setSearch] = useState('');
   const [creating, setCreating] = useState(false);
+  const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
+  const [recording, setRecording] = useState(false);
 
   useEffect(() => {
     void dispatch(fetchTripsThunk({}));
@@ -70,6 +72,20 @@ export function TripsPage() {
     [dispatch],
   );
 
+  const handleRecordCollection = useCallback(
+    async (tripId: string, millId: string, actualWeight: number, notes?: string) => {
+      setRecording(true);
+      try {
+        await dispatch(recordCollectionThunk({ tripId, data: { millId, actualWeight, notes } })).unwrap();
+      } finally {
+        setRecording(false);
+      }
+    },
+    [dispatch],
+  );
+
+  const selectedTrip = selectedTripId ? trips.find((t: Trip) => t.id === selectedTripId) ?? null : null;
+
   const filteredTrips = trips.filter((t: Trip) => {
     if (!search) return true;
     const q = search.toLowerCase();
@@ -109,7 +125,23 @@ export function TripsPage() {
         placeholder="Cari trip berdasarkan ID, pengemudi, atau kendaraan..."
       />
 
-      <TripList trips={filteredTrips} loading={loading} onStatusChange={handleStatusChange} />
+      <TripList
+        trips={filteredTrips}
+        loading={loading}
+        onStatusChange={handleStatusChange}
+        onRowClick={(trip: Trip) => { setSelectedTripId(trip.id === selectedTripId ? null : trip.id); }}
+      />
+
+      {selectedTrip && selectedTrip.status === 'IN_PROGRESS' && (
+        <div className={styles['collection-section']}>
+          <CollectionForm
+            tripId={selectedTrip.id}
+            collections={selectedTrip.collections}
+            onRecord={(tripId, millId, weight, notes) => { void handleRecordCollection(tripId, millId, weight, notes); }}
+            loading={recording}
+          />
+        </div>
+      )}
     </PageLayout>
   );
 }

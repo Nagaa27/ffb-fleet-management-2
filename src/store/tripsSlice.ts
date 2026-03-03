@@ -2,7 +2,7 @@
 // Redux slice for trip state management.
 
 import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit';
-import { fetchTrips, fetchTripById, createTrip, updateTripStatus } from '../api/tripApi';
+import { fetchTrips, fetchTripById, createTrip, updateTripStatus, recordCollection } from '../api/tripApi';
 import type { RootState } from './store';
 
 interface CollectionItem {
@@ -103,6 +103,15 @@ export const updateTripStatusThunk = createAsyncThunk(
   },
 );
 
+export const recordCollectionThunk = createAsyncThunk(
+  'trips/recordCollection',
+  async ({ tripId, data }: { tripId: string; data: { millId: string; actualWeight: number; notes?: string } }) => {
+    const response = await recordCollection(tripId, data);
+    if (!response.success || !response.data) throw new Error(response.error ?? 'Unknown error');
+    return { tripId, collection: response.data };
+  },
+);
+
 const tripsSlice = createSlice({
   name: 'trips',
   initialState,
@@ -146,6 +155,21 @@ const tripsSlice = createSlice({
         if (idx !== -1) state.items[idx] = action.payload;
         if (state.selectedTrip?.id === action.payload.id) {
           state.selectedTrip = action.payload;
+        }
+      })
+      // Record collection
+      .addCase(recordCollectionThunk.fulfilled, (state, action) => {
+        const { tripId, collection } = action.payload;
+        const trip = state.items.find((t) => t.id === tripId);
+        if (trip) {
+          const cols = trip.collections ?? [];
+          const idx = cols.findIndex((c) => c.mill_id === collection.mill_id);
+          if (idx !== -1) {
+            cols[idx] = collection;
+          } else {
+            cols.push(collection);
+          }
+          trip.collections = cols;
         }
       });
   },
