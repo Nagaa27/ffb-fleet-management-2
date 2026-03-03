@@ -119,4 +119,10 @@
   --z-overlay: 40;
   --z-modal: 50;
   --z-toast: 60;
+
+  /* ── Breakpoints (reference only — use raw values in @media) ───────── */
+  /* sm: 640px   — large phone / small tablet                            */
+  /* md: 768px   — tablet portrait                                       */
+  /* lg: 1024px  — tablet landscape / small desktop                      */
+  /* xl: 1280px  — desktop                                               */
 }

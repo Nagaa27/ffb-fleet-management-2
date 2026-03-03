@@ -6,9 +6,10 @@
   gap: var(--space-4);
 }
 
+/* Mobile-first: single column */
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-4);
 }
 
@@ -16,4 +17,11 @@
   display: flex;
   justify-content: flex-end;
   padding-top: var(--space-2);
+}
+
+/* sm (640px+): multi-column form */
+@media (min-width: 640px) {
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
 }

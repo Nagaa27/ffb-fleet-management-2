@@ -41,7 +41,7 @@ describe('driversSlice', () => {
   });
 
   it('fetchDriversThunk populates items', async () => {
-    vi.mocked(fetchDrivers).mockResolvedValue({ success: true, data: mockDrivers });
+    vi.mocked(fetchDrivers).mockResolvedValue({ success: true, data: mockDrivers, error: null });
 
     const store = createTestStore();
     await store.dispatch(fetchDriversThunk());
@@ -51,9 +51,9 @@ describe('driversSlice', () => {
   });
 
   it('createDriverThunk adds a new driver', async () => {
-    vi.mocked(fetchDrivers).mockResolvedValue({ success: true, data: mockDrivers });
+    vi.mocked(fetchDrivers).mockResolvedValue({ success: true, data: mockDrivers, error: null });
     const newDriver = { id: '3', name: 'New', license_number: 'SIM-003', phone_number: '0814', status: 'AVAILABLE', created_at: '', updated_at: '' };
-    vi.mocked(createDriver).mockResolvedValue({ success: true, data: newDriver });
+    vi.mocked(createDriver).mockResolvedValue({ success: true, data: newDriver, error: null });
 
     const store = createTestStore();
     await store.dispatch(fetchDriversThunk());
@@ -63,8 +63,8 @@ describe('driversSlice', () => {
   });
 
   it('deleteDriverThunk removes a driver', async () => {
-    vi.mocked(fetchDrivers).mockResolvedValue({ success: true, data: mockDrivers });
-    vi.mocked(deleteDriver).mockResolvedValue({ success: true });
+    vi.mocked(fetchDrivers).mockResolvedValue({ success: true, data: mockDrivers, error: null });
+    vi.mocked(deleteDriver).mockResolvedValue({ success: true, data: null, error: null });
 
     const store = createTestStore();
     await store.dispatch(fetchDriversThunk());

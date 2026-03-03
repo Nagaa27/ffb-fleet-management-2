@@ -42,7 +42,7 @@ describe('vehiclesSlice', () => {
   });
 
   it('fetchVehiclesThunk populates items', async () => {
-    vi.mocked(fetchVehicles).mockResolvedValue({ success: true, data: mockVehicles });
+    vi.mocked(fetchVehicles).mockResolvedValue({ success: true, data: mockVehicles, error: null });
 
     const store = createTestStore();
     await store.dispatch(fetchVehiclesThunk());
@@ -52,9 +52,9 @@ describe('vehiclesSlice', () => {
   });
 
   it('createVehicleThunk adds a new vehicle', async () => {
-    vi.mocked(fetchVehicles).mockResolvedValue({ success: true, data: mockVehicles });
+    vi.mocked(fetchVehicles).mockResolvedValue({ success: true, data: mockVehicles, error: null });
     const newVehicle = { id: '3', plate_number: 'BK 9999', type: 'TRUCK_SMALL', capacity: 6, driver_id: null, status: 'IDLE', created_at: '', updated_at: '' };
-    vi.mocked(createVehicle).mockResolvedValue({ success: true, data: newVehicle });
+    vi.mocked(createVehicle).mockResolvedValue({ success: true, data: newVehicle, error: null });
 
     const store = createTestStore();
     await store.dispatch(fetchVehiclesThunk());
@@ -64,8 +64,8 @@ describe('vehiclesSlice', () => {
   });
 
   it('deleteVehicleThunk removes a vehicle', async () => {
-    vi.mocked(fetchVehicles).mockResolvedValue({ success: true, data: mockVehicles });
-    vi.mocked(deleteVehicle).mockResolvedValue({ success: true });
+    vi.mocked(fetchVehicles).mockResolvedValue({ success: true, data: mockVehicles, error: null });
+    vi.mocked(deleteVehicle).mockResolvedValue({ success: true, data: null, error: null });
 
     const store = createTestStore();
     await store.dispatch(fetchVehiclesThunk());

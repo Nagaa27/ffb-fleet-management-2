@@ -6,13 +6,21 @@
   gap: var(--space-4);
 }
 
+/* Mobile-first: single column form */
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-4);
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
+}
+
+/* sm (640px+): multi-column form */
+@media (min-width: 640px) {
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
 }

@@ -52,7 +52,7 @@ describe('dashboardSlice', () => {
 
   it('fetchDashboardThunk sets loading state', async () => {
     const mockedFn = vi.mocked(fetchDashboardSummary);
-    mockedFn.mockResolvedValue({ success: true, data: mockSummary });
+    mockedFn.mockResolvedValue({ success: true, data: mockSummary, error: null });
 
     const store = createTestStore();
     const promise = store.dispatch(fetchDashboardThunk('2026-03-02'));
@@ -65,7 +65,7 @@ describe('dashboardSlice', () => {
 
   it('fetchDashboardThunk handles error', async () => {
     const mockedFn = vi.mocked(fetchDashboardSummary);
-    mockedFn.mockResolvedValue({ success: false, error: 'Server error' });
+    mockedFn.mockResolvedValue({ success: false, error: 'Server error', data: null });
 
     const store = createTestStore();
     await store.dispatch(fetchDashboardThunk('2026-03-02'));

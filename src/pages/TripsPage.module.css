@@ -4,5 +4,12 @@
   background-color: white;
   border: 1px solid var(--color-neutral-200);
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  padding: var(--space-4);
+}
+
+/* sm (640px+) */
+@media (min-width: 640px) {
+  .form-section {
+    padding: var(--space-5);
+  }
 }
