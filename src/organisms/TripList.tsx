@@ -17,9 +17,11 @@ interface TripListProps {
   loading?: boolean;
   onRowClick?: (trip: Trip) => void;
   onStatusChange?: (tripId: string, newStatus: string) => void;
+  expandedTripId?: string | null;
+  renderExpandedRow?: (trip: Trip) => React.ReactNode;
 }
 
-export function TripList({ trips, loading = false, onRowClick, onStatusChange }: TripListProps) {
+export function TripList({ trips, loading = false, onRowClick, onStatusChange, expandedTripId, renderExpandedRow }: TripListProps) {
   const columns: Column<Trip>[] = [
     {
       key: 'id',
@@ -137,6 +139,8 @@ export function TripList({ trips, loading = false, onRowClick, onStatusChange }:
         loading={loading}
         emptyMessage="Belum ada trip"
         onRowClick={onRowClick}
+        expandedKey={expandedTripId}
+        renderExpandedRow={renderExpandedRow}
       />
     </div>
   );

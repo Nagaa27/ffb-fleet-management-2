@@ -64,6 +64,20 @@
   background-color: var(--color-neutral-50);
 }
 
+.tr--expanded {
+  background-color: var(--color-primary-50, #eff6ff);
+  border-bottom-color: var(--color-primary-200, #bfdbfe);
+}
+
+.tr-expanded-content {
+  background-color: var(--color-neutral-50, #f9fafb);
+  border-bottom: 2px solid var(--color-primary-200, #bfdbfe);
+}
+
+.td-expanded {
+  padding: 0;
+}
+
 .td {
   padding: var(--space-2) var(--space-3);
   font-size: var(--font-size-sm);

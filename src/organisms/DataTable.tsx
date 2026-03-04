@@ -1,7 +1,7 @@
 // src/organisms/DataTable.tsx
 // Organism: Reusable data table with sorting and virtual scrolling for large datasets.
 
-import { useState, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { EmptyState, TableSkeleton } from '../molecules';
@@ -22,6 +22,10 @@ interface DataTableProps<T> {
   loading?: boolean;
   emptyMessage?: string;
   onRowClick?: (row: T) => void;
+  /** Key of the currently expanded row (matched via keyExtractor) */
+  expandedKey?: string | null;
+  /** Content to render in an expanded row below the matching row */
+  renderExpandedRow?: (row: T) => React.ReactNode;
   /** Estimated row height in px for virtual scrolling (default: 48) */
   rowHeight?: number;
   /** Enable virtual scrolling when row count exceeds this threshold (default: 100) */
@@ -42,6 +46,8 @@ export function DataTable<T>({
   loading = false,
   emptyMessage = 'Tidak ada data',
   onRowClick,
+  expandedKey,
+  renderExpandedRow,
   rowHeight = 48,
   virtualThreshold = 100,
 }: DataTableProps<T>) {
@@ -122,19 +128,31 @@ export function DataTable<T>({
         <table className={styles['table']}>
           {headerRow}
           <tbody>
-            {sortedData.map((row) => (
-              <tr
-                key={keyExtractor(row)}
-                className={`${styles['tr']} ${onRowClick ? styles['tr--clickable'] : ''}`}
-                onClick={onRowClick ? () => { onRowClick(row); } : undefined}
-              >
-                {columns.map((col) => (
-                  <td key={col.key} className={styles['td']}>
-                    {col.render(row)}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            {sortedData.map((row) => {
+              const rowKey = keyExtractor(row);
+              const isExpanded = expandedKey != null && rowKey === expandedKey;
+              return (
+                <React.Fragment key={rowKey}>
+                  <tr
+                    className={`${styles['tr']} ${onRowClick ? styles['tr--clickable'] : ''} ${isExpanded ? styles['tr--expanded'] : ''}`}
+                    onClick={onRowClick ? () => { onRowClick(row); } : undefined}
+                  >
+                    {columns.map((col) => (
+                      <td key={col.key} className={styles['td']}>
+                        {col.render(row)}
+                      </td>
+                    ))}
+                  </tr>
+                  {isExpanded && renderExpandedRow && (
+                    <tr className={styles['tr-expanded-content']}>
+                      <td colSpan={columns.length} className={styles['td-expanded']}>
+                        {renderExpandedRow(row)}
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </tbody>
         </table>
       </div>

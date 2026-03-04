@@ -31,7 +31,12 @@ export function createTripRoutes(db: Database.Database): Router {
       };
 
       const trips = getAllTrips(db, filters);
-      res.json({ data: trips, success: true, error: null });
+      // Attach collections to each trip so the client has full data
+      const tripsWithCollections = trips.map((trip) => {
+        const collections = getCollectionsByTripId(db, trip.id);
+        return { ...trip, collections };
+      });
+      res.json({ data: tripsWithCollections, success: true, error: null });
     } catch {
       res.status(500).json({ data: null, success: false, error: 'Failed to fetch trips' });
     }

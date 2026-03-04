@@ -14,6 +14,190 @@
   }
 }
 
+/* ── Trip Detail Panel ── */
+
+.detail-section {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .detail-section {
+    padding: var(--space-5);
+  }
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.detail-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-neutral-900);
+  margin: 0;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+}
+
+@media (min-width: 640px) {
+  .detail-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--color-neutral-700);
+}
+
+.detail-icon {
+  color: var(--color-neutral-400);
+  flex-shrink: 0;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: var(--color-neutral-500);
+  white-space: nowrap;
+}
+
+.detail-value {
+  color: var(--color-neutral-800);
+}
+
+/* ── Weight Distribution Table ── */
+
+.weight-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.weight-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-neutral-800);
+  margin: 0;
+}
+
+.weight-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.weight-total {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary-700, #1d4ed8);
+  background: var(--color-primary-50, #eff6ff);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.weight-actual-total {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-success-700, #15803d);
+  background: var(--color-success-50, #f0fdf4);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.weight-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.weight-table th {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  font-weight: 600;
+  color: var(--color-neutral-600);
+  border-bottom: 2px solid var(--color-neutral-200);
+  background: var(--color-neutral-50, #f9fafb);
+}
+
+.weight-table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-neutral-100);
+  color: var(--color-neutral-700);
+}
+
+.row-recorded {
+  background: var(--color-success-50, #f0fdf4);
+}
+
+.status-recorded {
+  color: var(--color-success-600, #16a34a);
+  font-weight: 500;
+  font-size: 0.8125rem;
+}
+
+.status-pending {
+  color: var(--color-neutral-400);
+  font-size: 0.8125rem;
+}
+
+/* ── Cancellation Info ── */
+
+.cancel-info {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-error-50, #fef2f2);
+  border: 1px solid var(--color-error-200, #fecaca);
+  border-radius: var(--radius-md);
+}
+
+.cancel-info-icon {
+  color: var(--color-error-500, #ef4444);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cancel-info strong {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--color-error-700, #b91c1c);
+}
+
+.cancel-info-reason {
+  margin: var(--space-1) 0 0;
+  font-size: 0.875rem;
+  color: var(--color-error-600, #dc2626);
+}
+
+.cancel-info-date {
+  margin: var(--space-1) 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-neutral-500);
+}
+
+/* ── Collection Section (legacy compat) ── */
+
 .collection-section {
   background-color: white;
   border: 1px solid var(--color-neutral-200);
@@ -26,4 +210,45 @@
   .collection-section {
     padding: var(--space-5);
   }
+}
+
+/* ── Cancel Dialog Overlay ── */
+
+.cancel-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.cancel-dialog {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  width: 100%;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cancel-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-neutral-900);
+}
+
+.cancel-message {
+  font-size: 0.875rem;
+  color: var(--color-neutral-600);
+}
+
+.cancel-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
 }
