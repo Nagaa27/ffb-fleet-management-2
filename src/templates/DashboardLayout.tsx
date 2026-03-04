@@ -41,6 +41,9 @@ export function DashboardLayout() {
 
       <main className={styles['main']}>
         <Outlet />
+        <footer className={styles['footer']}>
+          <p>&copy; {new Date().getFullYear()} FFB Fleet Management System. Matius Celcius Sinaga</p>
+        </footer>
       </main>
     </div>
   );
